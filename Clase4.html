@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados del Modelo de Clasificación</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    h3 {
+      color: #2980b9;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+    .result {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .conclusion {
+      background-color: #eaf2f8;
+      border-left: 5px solid #2980b9;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Informe de Resultados del Modelo de Clasificación</h1>
+
+  <p>Este informe presenta los resultados obtenidos al realizar varias pruebas para mejorar la precisión de un modelo de clasificación de imágenes (MNIST) basado en redes neuronales convolucionales (CNN).</p>
+
+  <h2>Cambios Realizados y Resultados Obtenidos</h2>
+
+  <h3>1. Cambio en el Número de Filtros</h3>
+  <div class="result">
+    <p><strong>Objetivo:</strong> Aumentar la capacidad del modelo al agregar más filtros en las capas convolucionales.</p>
+    <p><strong>Cambio realizado:</strong></p>
+    <ul>
+      <li>Primer capa convolucional: Se cambió de 6 filtros a 16 filtros.</li>
+      <li>Segunda capa convolucional: Se cambió de 16 filtros a 32 filtros.</li>
+    </ul>
+    <p><strong>Resultados:</strong> Aunque el aumento de filtros permitió que el modelo capture características más complejas, no se observó una mejora significativa en la precisión ni en la reducción de la pérdida, lo que sugiere que estos cambios no fueron lo suficientemente efectivos para resolver el problema.</p>
+  </div>
+
+  <h3>2. Cambio en el Tamaño del Kernel</h3>
+  <div class="result">
+    <p><strong>Objetivo:</strong> Aumentar el tamaño del kernel para capturar patrones más grandes y complejos en las imágenes.</p>
+    <p><strong>Cambio realizado:</strong></p>
+    <ul>
+      <li>Se cambió el tamaño del kernel de 5x5 a 3x3 en ambas capas convolucionales.</li>
+    </ul>
+    <p><strong>Resultados:</strong> Aumentar el tamaño del kernel permitió al modelo captar características a mayor escala, pero no se observó un cambio significativo en la precisión o en el comportamiento del loss. Sin embargo, este ajuste podría mejorar el modelado de características espaciales de las imágenes.</p>
+  </div>
+
+  <h3>3. Cambio de la Función de Activación</h3>
+  <div class="result">
+    <p><strong>Objetivo:</strong> Mejorar la capacidad del modelo para aprender patrones no lineales al cambiar la función de activación.</p>
+    <p><strong>Cambio realizado:</strong></p>
+    <ul>
+      <li>Se cambió la función de activación de tanh a relu en todas las capas ocultas.</li>
+    </ul>
+    <p><strong>Resultados:</strong> La función de activación relu permitió que el modelo aprendiera de manera más eficiente y no se viera afectado por el problema del gradiente desvanecido que a veces ocurre con tanh.</p>
+  </div>
+
+  <h3>4. Evaluación de la Precisión y el Loss con Épocas Diferentes</h3>
+  <div class="result">
+    <p><strong>Con 10 épocas:</strong> El loss alcanzó 0.3261.</p>
+    <p><strong>Con 22 épocas (inicio del sobreajuste):</strong> El loss alcanzó 0.3256, y comenzó a aumentar a medida que el modelo pasó más tiempo entrenando, lo que indica que el modelo empezó a sobreajustarse a los datos de entrenamiento.</p>
+    <p><strong>Conclusión:</strong> A partir de las 22 épocas, el modelo parece comenzar a memorizar los datos, lo que genera un aumento en el loss en lugar de una mejora. Es un indicio claro de que se está produciendo sobreajuste (overfitting).</p>
+    <p><strong>Con 21 épocas (número óptimo de épocas):</strong> El modelo parece estar en su punto óptimo con 21 épocas de entrenamiento. Esto sugiere que esta es la cantidad de épocas ideal para evitar el sobreajuste y obtener un buen rendimiento general.</p>
+  </div>
+
+  <h3>5. Normalización de los Valores</h3>
+  <div class="result">
+    <p><strong>Observación:</strong> El modelo ya está normalizando los valores, es decir, convierte el rango de 0-255 a 0-1, lo que lleva las imágenes a una escala de grises. Por lo tanto, no se realizaron cambios adicionales en este aspecto.</p>
+  </div>
+
+  <h3>6. Aumento de la Resolución de la Imagen</h3>
+  <div class="result">
+    <p><strong>Objetivo:</strong> Aumentar la resolución para captar más detalles y mejorar el modelo.</p>
+    <p><strong>Cambio realizado:</strong> El tamaño de la imagen pasó de 28x28 a 32x32.</p>
+    <p><strong>Resultados:</strong> Se pensó que el aumento de la resolución permitiría al modelo captar más detalles, pero los resultados fueron similares. El modelo siguió mostrando un comportamiento similar, sin mejoras significativas.</p>
+  </div>
+
+  <h3>7. Variación del Número de Clases</h3>
+  <div class="result">
+    <p><strong>Observación:</strong> En este caso, no se consideró útil cambiar el número de clases, ya que son 10 clases debido a los dígitos del 0 al 9.</p>
+  </div>
+
+  <h3>8. Adición de una Capa Convolucional Más</h3>
+  <div class="result">
+    <p><strong>Objetivo:</strong> Agregar una capa adicional para aumentar el rendimiento del modelo sin sobreajustarlo.</p>
+    <p><strong>Resultados:</strong> Inicialmente, los valores de loss y accuracy no fueron tan buenos como los otros, pero a partir de la segunda época los resultados fueron similares, con una precisión cerca del 90%. Aunque computacionalmente se demora lo mismo, los resultados finales fueron muy parecidos.</p>
+  </div>
+
+  <h3>9. Uso de PCA (Análisis de Componentes Principales)</h3>
+  <div class="result">
+    <p><strong>Objetivo:</strong> Reducir las variables de las imágenes para acelerar el proceso y mejorar el rendimiento del modelo.</p>
+    <p><strong>Resultados:</strong> El modelo siguió igual, aunque el proceso fue más rápido. Esta técnica podría ser útil en el caso de entrenar modelos con un número mucho mayor de épocas.</p>
+  </div>
+
+  <div class="conclusion">
+    <h2>Conclusiones Finales</h2>
+    <p>A pesar de los ajustes realizados, el modelo siempre alcanzó un rendimiento del 90% de precisión. Las mejoras en el número de filtros, la resolución de las imágenes, o la adición de capas convolucionales no resultaron en mejoras significativas. En este caso se podrían intentar aún más pruebas, combinando parámetros, ajustando valores, intentando desmejorar el modelo para ver si algo que lo puede afectar de manera negativa, es porque puede ser muy influyente y a su vez ser clave para una mejora</p>
+  </div>
+</body>
+</html>
